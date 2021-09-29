@@ -1,5 +1,5 @@
 import express from "express";
-import db from "../../db/models/ndex.js";
+import db from "../../db/models/index.js";
 const { Product, Review } = db;
 
 const reviewRouter = express.Router();

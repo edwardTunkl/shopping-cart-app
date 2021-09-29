@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import listEndpoints from "express-list-endpoints";
 import {connectDataBase} from './db/index.js'
+import productsRouter from './services/products/index.js'
+import reviewRouter from './services/reviews/index.js';
 
 const server = express()
 const PORT = process.env.PORT || 3001;
