@@ -32,7 +32,7 @@ productsRouter.get("/", async(req, res, next) =>{
 
 //---GET:id---
 
-productsRouter.get("/", async(req, res, next) =>{
+productsRouter.get("/:id", async(req, res, next) =>{
   try {
     const data = await Product.findByPk(req.params.id)
     res.status(200).send(data)
@@ -44,7 +44,7 @@ productsRouter.get("/", async(req, res, next) =>{
 
 //---Delete---
 
-productsRouter.get("/", async(req, res, next) =>{
+productsRouter.delete("/:id", async(req, res, next) =>{
   try {
     const rows = await Product.destroy({where: {id:req.params.id}})
     if (rows >0 ){
@@ -60,7 +60,7 @@ productsRouter.get("/", async(req, res, next) =>{
 
 //---Post---
 
-productsRouter.get("/", async(req, res, next) =>{
+productsRouter.post("/", async(req, res, next) =>{
   try {
     const data = await Product.create(req.body)
     res.status(204).send(data)
@@ -72,7 +72,7 @@ productsRouter.get("/", async(req, res, next) =>{
 
 //---Put---
 
-productsRouter.get("/", async(req, res, next) =>{
+productsRouter.put("/:id", async(req, res, next) =>{
   try {
     const data = await Product.update(req.body, {
       where: {id: req.params.id},
