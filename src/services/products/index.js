@@ -1,5 +1,6 @@
 import express from 'express'
 import s from "sequelize"
+import Category from '../../db/models/categories.js'
 import db from '../../db/models/index.js'
 
 const {Op} = s
@@ -12,7 +13,11 @@ const productsRouter = express.Router()
 productsRouter.get("/", async(req, res, next) =>{
   try {
     const data = await Product.findAll({
-      include: Review,
+      include: [
+       User,
+       Category,
+       { model: Review, through: { attributes: [username] } },
+      ],
       where: req.query.search
       ? {
           [Op.or]: [
