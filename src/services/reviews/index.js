@@ -21,7 +21,9 @@ reviewRouter.get("/", async (req, res, next) => {
 
 reviewRouter.get("/:id", async (req, res, next) => {
   try {
-    const data = await Review.findByPk(req.params.id);
+    const data = await Review.findOne({where: {id:req.params.id},
+    include: Product,
+    });
     res.status(200).send(data);
   } catch (error) {
     console.log(error);
