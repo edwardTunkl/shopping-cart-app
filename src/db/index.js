@@ -17,12 +17,12 @@ const testDataBase = async () => {
   }
 };
 
-testDataBase();
+//testDataBase();
 
 export const connectDataBase = async () => {
   try {
     await sequelize.sync({ alter: true });
-    console.log("DB connected");
+    console.log("-----DB connected-----");
   } catch (error) {
     console.log(error);
   }

@@ -1,16 +1,14 @@
 import express from "express";
 import db from "../../db/models/index.js";
-const { Product, Review } = db;
+const { Category } = db;
 
-const reviewRouter = express.Router();
+const categoryRouter = express.Router();
 
 //---Get---
 
-reviewRouter.get("/", async (req, res, next) => {
+categoryRouter.get("/", async (req, res, next) => {
   try {
-    const data = await Review.findAll({
-      include: Product,
-    });
+    const data = await Category.findAll();
     res.status(200).send(data);
   } catch (error) {
     console.log(error);
@@ -20,11 +18,9 @@ reviewRouter.get("/", async (req, res, next) => {
 
 //---Get:id---
 
-reviewRouter.get("/:id", async (req, res, next) => {
+categoryRouter.get("/:id", async (req, res, next) => {
   try {
-    const data = await Review.findOne({where: {id:req.params.id},
-    include: Product,
-    });
+    const data = await Category.findOne({ where: { id: req.params.id } });
     res.status(200).send(data);
   } catch (error) {
     console.log(error);
@@ -34,9 +30,9 @@ reviewRouter.get("/:id", async (req, res, next) => {
 
 //---Delete---
 
-reviewRouter.delete("/:id", async (req, res, next) => {
+categoryRouter.delete("/:id", async (req, res, next) => {
   try {
-    const rows = await Review.destroy({ where: { id: req.params.id } });
+    const rows = await Category.destroy({ where: { id: req.params.id } });
     if (rows > 0) {
       res.status(200).send("OK");
     } else {
@@ -48,12 +44,12 @@ reviewRouter.delete("/:id", async (req, res, next) => {
   }
 });
 
-//---POST---
+//---Post---
 
-reviewRouter.post("/", async (req, res, next) => {
+categoryRouter.post("/", async (req, res, next) => {
   try {
-    const data = await Review.create(req.body);
-    res.status(204).send(data);
+    const data = await Category.create(req.body)
+    res.status(204).send(data)
   } catch (error) {
     console.log(error);
     next(error);
@@ -62,9 +58,9 @@ reviewRouter.post("/", async (req, res, next) => {
 
 //---Put---
 
-reviewRouter.put("/:id", async (req, res, next) => {
+categoryRouter.put("/:id", async (req, res, next) => {
   try {
-    const data = await Review.update(req.body, {
+    const data = await Category.update(req.body, {
       where: { id: req.params.id },
       returning: true,
     });
@@ -75,4 +71,5 @@ reviewRouter.put("/:id", async (req, res, next) => {
   }
 });
 
-export default reviewRouter
+
+export default categoryRouter;

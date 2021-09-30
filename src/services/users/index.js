@@ -1,17 +1,18 @@
 import express from "express";
+import s from "sequelize";
 import db from "../../db/models/index.js";
-const { Product, Review } = db;
 
-const reviewRouter = express.Router();
+const { Op } = s;
+const { User } = db;
+
+const usersRouter = express.Router();
 
 //---Get---
 
-reviewRouter.get("/", async (req, res, next) => {
+usersRouter.get("/", async (req, res, next) => {
   try {
-    const data = await Review.findAll({
-      include: Product,
-    });
-    res.status(200).send(data);
+    const data = await User.findAll();
+    res.status(200).send(data)
   } catch (error) {
     console.log(error);
     next(error);
@@ -20,12 +21,11 @@ reviewRouter.get("/", async (req, res, next) => {
 
 //---Get:id---
 
-reviewRouter.get("/:id", async (req, res, next) => {
+usersRouter.get("/:id", async (req, res, next) => {
   try {
-    const data = await Review.findOne({where: {id:req.params.id},
-    include: Product,
-    });
+    const data = await User.findOne({where: {id:req.params.id}})
     res.status(200).send(data);
+
   } catch (error) {
     console.log(error);
     next(error);
@@ -34,9 +34,9 @@ reviewRouter.get("/:id", async (req, res, next) => {
 
 //---Delete---
 
-reviewRouter.delete("/:id", async (req, res, next) => {
+usersRouter.delete("/:id", async (req, res, next) => {
   try {
-    const rows = await Review.destroy({ where: { id: req.params.id } });
+    const rows = await User.destroy({ where: { id: req.params.id }})
     if (rows > 0) {
       res.status(200).send("OK");
     } else {
@@ -48,11 +48,11 @@ reviewRouter.delete("/:id", async (req, res, next) => {
   }
 });
 
-//---POST---
+//---Post---
 
-reviewRouter.post("/", async (req, res, next) => {
+usersRouter.post("/", async (req, res, next) => {
   try {
-    const data = await Review.create(req.body);
+    const data = await User.create(req.body)
     res.status(204).send(data);
   } catch (error) {
     console.log(error);
@@ -62,12 +62,12 @@ reviewRouter.post("/", async (req, res, next) => {
 
 //---Put---
 
-reviewRouter.put("/:id", async (req, res, next) => {
+usersRouter.put("/:id", async (req, res, next) => {
   try {
-    const data = await Review.update(req.body, {
+    const data = await User.update(req.body, {
       where: { id: req.params.id },
       returning: true,
-    });
+    })
     res.status(200).send(data[1][0]);
   } catch (error) {
     console.log(error);
@@ -75,4 +75,4 @@ reviewRouter.put("/:id", async (req, res, next) => {
   }
 });
 
-export default reviewRouter
+export default usersRouter;
