@@ -2,6 +2,7 @@ import express from 'express'
 import s from "sequelize"
 import Category from '../../db/models/categories.js'
 import db from '../../db/models/index.js'
+import UserProduct from '../../db/models/userProducts.js'
 
 const {Op} = s
 const {Product, Review, ProductCategory} = db
@@ -69,6 +70,10 @@ productsRouter.post("/", async(req, res, next) =>{
     //inser postId and categoryId to many-to-many table
     const categoryData = await ProductCategory.create({
       categoryId: req.body.categoryId,
+      productId: data.dataValues.id
+    })
+    const userData = await UserProduct.create({
+      userId: req.body.userId,
       productId: data.dataValues.id
     })
     res.status(204).send(data)
