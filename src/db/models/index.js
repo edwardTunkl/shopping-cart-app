@@ -17,8 +17,8 @@ import ProductCategory from './productCategories.js'
 Product.hasMany(Review); // => authorId  Author.findAll({include: Article})
 Review.belongsTo(Product); // => Article.findAll({include:Author})
 
-User.hasMany(Review)
-Review.belongsTo(User)
+User.hasMany(Review, { foreignKey: "user_id" })
+Review.belongsTo(User, { foreignKey: "user_id" })
 
 //---Many-to-many---
 

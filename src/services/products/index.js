@@ -4,7 +4,7 @@ import Category from '../../db/models/categories.js'
 import db from '../../db/models/index.js'
 
 const {Op} = s
-const {Product, Review} = db
+const {Product, Review, ProductCategory} = db
 
 const productsRouter = express.Router()
 
@@ -14,15 +14,13 @@ productsRouter.get("/", async(req, res, next) =>{
   try {
     const data = await Product.findAll({
       include: [
-       User,
-       Category,
-       { model: Review, through: { attributes: [username] } },
+        { model: Category, through: { attributes: [] } },
+        { model: Review, include: User }
       ],
       where: req.query.search
       ? {
           [Op.or]: [
             { name: { [Op.iLike]: `%${req.query.search}%` } },
-            { brand: { [Op.iLike]: `%${req.query.search}%` } },
             { category: { [Op.iLike]: `%${req.query.search}%` } },
           ],
         }
@@ -68,6 +66,11 @@ productsRouter.delete("/:id", async(req, res, next) =>{
 productsRouter.post("/", async(req, res, next) =>{
   try {
     const data = await Product.create(req.body)
+    //inser postId and categoryId to many-to-many table
+    const categoryData = await ProductCategory.create({
+      categoryId: req.body.categoryId,
+      productId: data.dataValues.id
+    })
     res.status(204).send(data)
   } catch (error) {
     console.log(error)

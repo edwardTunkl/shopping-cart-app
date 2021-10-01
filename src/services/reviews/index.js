@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../../db/models/index.js";
-const { Product, Review } = db;
+const { Product, Review, User } = db;
 
 const reviewRouter = express.Router();
 
@@ -9,7 +9,7 @@ const reviewRouter = express.Router();
 reviewRouter.get("/", async (req, res, next) => {
   try {
     const data = await Review.findAll({
-      include: Product,
+      include: [User],
     });
     res.status(200).send(data);
   } catch (error) {
@@ -22,8 +22,7 @@ reviewRouter.get("/", async (req, res, next) => {
 
 reviewRouter.get("/:id", async (req, res, next) => {
   try {
-    const data = await Review.findOne({where: {id:req.params.id},
-    include: Product,
+    const data = await Review.findByPk({where: {id:req.params.id}
     });
     res.status(200).send(data);
   } catch (error) {
