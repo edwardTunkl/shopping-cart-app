@@ -5,7 +5,7 @@ import db from '../../db/models/index.js'
 import UserProduct from '../../db/models/userProducts.js'
 
 const {Op} = s
-const {Product, Review, ProductCategory} = db
+const {Product, Review, ProductCategory, User} = db
 
 const productsRouter = express.Router()
 
@@ -16,7 +16,8 @@ productsRouter.get("/", async(req, res, next) =>{
     const data = await Product.findAll({
       include: [
         { model: Category, through: { attributes: [] } },
-        { model: Review, include: User }
+        // { model: Review, include: User }
+        { model: User, through: { attributes: [] } },
       ],
       where: req.query.search
       ? {
